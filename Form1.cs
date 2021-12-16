@@ -164,9 +164,10 @@ namespace WindowsFormsApp6
         private void createTableLayoutPanel(Point XY,List<players>team1,List<players>team2)
         {
             TableLayoutPanel panel = new TableLayoutPanel();
-            panel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
+            panel.BackgroundImage = Resources.scoreboard;
+            panel.CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble;
             panel.Location = new System.Drawing.Point(XY.X,XY.Y);            
-            int resize_height = 20 * (team1.Count) + 60;
+            int resize_height = 25 * (team1.Count) + 65;
             panel.Size = new System.Drawing.Size(600, resize_height);
             Controls.Add(panel);
             panel.ColumnCount = 6;
@@ -178,23 +179,23 @@ namespace WindowsFormsApp6
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 1.5F));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2F));
             panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            panel.Controls.Add(new Label() {Text = "ELO"}, 0, 0);
-            panel.Controls.Add(new Label() {Text = "CIV" }, 1, 0);
-            panel.Controls.Add(new Label() { Text = "Team 1" }, 2, 0);
-            panel.Controls.Add(new Label() { Text = "Team 2" }, 3, 0);            
-            panel.Controls.Add(new Label() { Text = "CIV" }, 4, 0);
-            panel.Controls.Add(new Label() { Text = "ELO" }, 5, 0);
+            panel.Controls.Add(new Label() { ForeColor=Color.White, Text = "ELO", BackColor = System.Drawing.Color.Transparent }, 0, 0);
+            panel.Controls.Add(new Label() { ForeColor=Color.White, Text = "CIV", BackColor = System.Drawing.Color.Transparent }, 1, 0);
+            panel.Controls.Add(new Label() { ForeColor=Color.White, Text = "Team 1", BackColor = System.Drawing.Color.Transparent }, 2, 0);
+            panel.Controls.Add(new Label() { ForeColor=Color.White, Text = "Team 2", BackColor = System.Drawing.Color.Transparent }, 3, 0);            
+            panel.Controls.Add(new Label() { ForeColor=Color.White, Text = "CIV", BackColor = System.Drawing.Color.Transparent }, 4, 0);
+            panel.Controls.Add(new Label() { ForeColor=Color.White, Text = "ELO", BackColor = System.Drawing.Color.Transparent }, 5, 0);
                         
             for (int i = 0; i < team1.Count; i++)
             {
                 panel.RowCount = panel.RowCount + 1;
-                panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));                
-                panel.Controls.Add(new Label() { Text = team1[i].Elo.ToString() }, 0, panel.RowCount - 1);
+                panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 25F));                
+                panel.Controls.Add(new Label() { ForeColor=Color.White, Text = team1[i].Elo.ToString(), BackColor = System.Drawing.Color.Transparent}, 0, panel.RowCount - 1);
                 panel.Controls.Add(new PictureBox() { Image = getCivFlag(team1[i].Civ), SizeMode = PictureBoxSizeMode.StretchImage}, 1, panel.RowCount - 1);
-                panel.Controls.Add(new Label() { Text = team1[i].Name}, 2, panel.RowCount - 1);
-                panel.Controls.Add(new Label() { Text = team2[i].Name  },3, panel.RowCount - 1);
+                panel.Controls.Add(new Label() { ForeColor=Color.White, Text = team1[i].Name, BackColor = System.Drawing.Color.Transparent }, 2, panel.RowCount - 1);
+                panel.Controls.Add(new Label() { ForeColor=Color.White, Text = team2[i].Name, BackColor = System.Drawing.Color.Transparent },3, panel.RowCount - 1);
                 panel.Controls.Add(new PictureBox() { Image = getCivFlag(team2[i].Civ), SizeMode = PictureBoxSizeMode.StretchImage }, 4, panel.RowCount - 1);
-                panel.Controls.Add(new Label() { Text = team2[i].Elo.ToString() }, 5, panel.RowCount - 1);
+                panel.Controls.Add(new Label() { ForeColor=Color.White, Text = team2[i].Elo.ToString(), BackColor = System.Drawing.Color.Transparent }, 5, panel.RowCount - 1);
             }            
         }
 
