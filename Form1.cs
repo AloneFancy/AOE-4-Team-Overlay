@@ -44,13 +44,19 @@ namespace WindowsFormsApp6
             /*if (request.ContentLength < 30)
                 return null;*/
             request.AutomaticDecompression = DecompressionMethods.GZip;
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            try
             {
-                using (Stream stream = response.GetResponseStream())
-                using (StreamReader reader = new StreamReader(stream))
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
-                    html = reader.ReadToEnd();
+                    using (Stream stream = response.GetResponseStream())
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        html = reader.ReadToEnd();
+                    }
                 }
+            }catch (WebException ex)
+            {
+                return String.Empty;
             }
             return html;
         }
@@ -101,10 +107,19 @@ namespace WindowsFormsApp6
             String url = "https://aoeiv.net/api/player/matches?game=aoe4" + "&profile_id=" + textBox1.Text + "&count=1";
             Console.WriteLine(url);
             String url_guide = "https://aoeiv.net/api/strings?game=aoe4&language=en";
-            dynamic guide  = JObject.Parse(get_request(url_guide));                        
-            dynamic data =  JArray.Parse(get_request(url));
-            if (data != null)
+            dynamic guide  = JObject.Parse(get_request(url_guide));
+            dynamic data;
+            try
             {
+                data = JArray.Parse(get_request(url));
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+            if (data.Count == 0 || data == null)
+                return;
+            
                 var guide_map = guide["map_type"];
                 String query = "$.[?(@.id==" + data[0]["map_type"] + ")]";
                 var maps = guide_map.SelectToken(query);
@@ -134,7 +149,7 @@ namespace WindowsFormsApp6
                 tablePosition.X = textBox2.Location.X;
                 tablePosition.Y = 100;
                 createTableLayoutPanel(tablePosition, team1, team2);
-            }
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -150,8 +165,7 @@ namespace WindowsFormsApp6
         {
             TableLayoutPanel panel = new TableLayoutPanel();
             panel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
-            panel.Location = new System.Drawing.Point(XY.X,XY.Y);
-            MessageBox.Show(team1.Count.ToString());
+            panel.Location = new System.Drawing.Point(XY.X,XY.Y);            
             int resize_height = 20 * (team1.Count) + 60;
             panel.Size = new System.Drawing.Size(600, resize_height);
             Controls.Add(panel);
@@ -170,11 +184,7 @@ namespace WindowsFormsApp6
             panel.Controls.Add(new Label() { Text = "Team 2" }, 3, 0);            
             panel.Controls.Add(new Label() { Text = "CIV" }, 4, 0);
             panel.Controls.Add(new Label() { Text = "ELO" }, 5, 0);
-            
-
-
-            // For Add New Row (Loop this code for add multiple rows)
-            
+                        
             for (int i = 0; i < team1.Count; i++)
             {
                 panel.RowCount = panel.RowCount + 1;
